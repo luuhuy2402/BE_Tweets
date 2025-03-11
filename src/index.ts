@@ -1,15 +1,16 @@
 import express from 'express'
-import userrouter from '~/user.router'
+import usersrouter from '~/routes/users.routes'
+import databaseService from '~/services/database.services'
 
 const app = express()
 const port = 3000
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use(express.json()) //để parse dữ liệu gửi  lên từ json -> object
 
 //nếu muốn truy cập vào router/tweets thì sẽ cần ghi /apis/tweets
-app.use('/user', userrouter)
+app.use('/users', usersrouter)
+
+databaseService.connect()
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
