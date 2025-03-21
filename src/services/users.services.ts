@@ -1,10 +1,13 @@
+import { RegisterReqBody } from '~/models/requests/User.requests'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 
 class UsersService {
-  async register(payload: { email: string; password: string }) {
-    const { email, password } = payload
-    const result = await databaseService.users.insertOne(new User({ email, password }))
+  async register(payload: RegisterReqBody) {
+    const result = await databaseService.users.insertOne(
+      //UserType cura date_of_birth quy  định là kiểu Date mà người dùng gửi lên kiểu string nên cần ép kiểu dữ liệu ghi đè lại thành kiểu Date
+      new User({ ...payload, date_of_birth: new Date(payload.date_of_birth) })
+    )
     return result
   }
 
